@@ -1,0 +1,67 @@
+##来源  慕课网  直面JavaScript中的30个疑难杂症
+1.浅拷贝：
+<script>
+       var obj = {
+          a:'hello',
+          b: {
+             a:'world',
+             b:111
+          },
+          c:[11,'Jack','Tom']
+       }
+ 
+       //浅拷贝
+    //    function simpleClone(objNew){
+    //      var obj = {}
+    //      for(var i in objNew){
+    //         obj[i] = objNew[i]
+    //      }
+
+    //      return obj
+    //    }
+       
+    //    var objCopy = simpleClone(obj);
+
+    //    objCopy.b.a = 'world1';
+    //    console.log(objCopy);
+   
+    var objCopy = Object.create(obj)
+    objCopy.b.a = 'world1';  //原obj修改成功就是浅拷贝
+    console.log(objCopy.__proto__)
+
+    </script>
+    
+    2.深拷贝
+    <script>
+       var obj = {
+          a:'hello',
+          b: {
+             a:'world',
+             b:1111
+          },
+          c:[11,'Jack','Tom']
+       }
+       
+       function deepClone(startObj, endObj){
+          var obj = endObj || {}
+          for(var i in startObj){
+              if(typeof startObj[i] === 'object'){
+                   obj[i] = startObj[i].constructor === Array? []: Object.create(null)
+                   deepClone(startObj[i],obj[i])
+              }else{
+                 obj[i] = startObj[i]
+              }
+          }
+
+          return obj
+       }
+
+    var objCopy = deepClone(obj) //深拷贝的第一种方式
+    var objCopy1 = JSON.parse(JSON.stringify(obj))//深拷贝第二种方式
+    objCopy.b.a = 'world1' //这里修改不改变原始obj的值
+    console.log(obj)
+    console.log(objCopy)
+    </script>
+    
+    
+    
